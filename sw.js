@@ -37,11 +37,11 @@ self.addEventListener('fetch', function(event) {
             // 重要：レスポンスを clone する。レスポンスは Stream で
             // ブラウザ用とキャッシュ用の2回必要。なので clone して
             // 2つの Stream があるようにする
-            var responseToCache = response.clone();
+            // var responseToCache = response.clone();
 
             caches.open(CACHE_NAME)
               .then(function(cache) {
-                cache.put(event.request, responseToCache);
+                cache.put(event.request, response);
               });
 
             return response;
