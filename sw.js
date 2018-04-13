@@ -26,7 +26,7 @@ self.addEventListener('fetch', function(event) {
           return response;
         }
 
-        
+
         return fetch(event.request).then(
           function(response) {
             // レスポンスが正しいかをチェック
@@ -37,11 +37,11 @@ self.addEventListener('fetch', function(event) {
             // 重要：レスポンスを clone する。レスポンスは Stream で
             // ブラウザ用とキャッシュ用の2回必要。なので clone して
             // 2つの Stream があるようにする
-            // var responseToCache = response.clone();
+            var responseToCache = response.clone();
 
             caches.open(CACHE_NAME)
               .then(function(cache) {
-                cache.put(event.request, response);
+                cache.put(event.request, response.clone());
               });
 
             return response;
@@ -50,4 +50,8 @@ self.addEventListener('fetch', function(event) {
       }
     )
   );
+});
+
+self.addEventListener('activate', event => {
+  console.log('V1 now ready to handle fetches!');
 });
